@@ -7,6 +7,7 @@ import com.example.monolithic.order.infrastructure.OrderItemRepository;
 import com.example.monolithic.order.infrastructure.OrderRepository;
 import com.example.monolithic.point.application.PointService;
 import com.example.monolithic.product.application.ProductService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,7 @@ public class OrderService {
     private final PointService pointService;
     private final ProductService productService;
 
+    @Transactional
     public void placeOrder(PlaceOrderCommand command) {
         Order order = orderRepository.save(new Order());
         Long totalPrice = 0L;
