@@ -2,9 +2,11 @@ package com.example.monolithic.order.domain;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
+@Getter
 @Table(name = "order_items")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class OrderItem {

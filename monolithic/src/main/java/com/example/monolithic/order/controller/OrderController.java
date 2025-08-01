@@ -1,6 +1,9 @@
 package com.example.monolithic.order.controller;
 
 import com.example.monolithic.order.application.OrderService;
+import com.example.monolithic.order.application.dto.CreateOrderResult;
+import com.example.monolithic.order.controller.dto.CreateOrderRequest;
+import com.example.monolithic.order.controller.dto.CreateOrderResponse;
 import com.example.monolithic.order.controller.dto.PlaceOrderRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,10 +16,15 @@ public class OrderController {
 
     private final OrderService orderService;
 
+    @PostMapping("/order")
+    public CreateOrderResponse createOrder(@RequestBody CreateOrderRequest request) {
+        CreateOrderResult result = orderService.createOrder(request.toCreateOrderCommand());
+
+        return new CreateOrderResponse(result.orderId());
+    }
 
     @PostMapping("/order/place")
     public void placeOrder(@RequestBody PlaceOrderRequest request) {
         orderService.placeOrder(request.toPlaceOrderCommand());
     }
-
 }
