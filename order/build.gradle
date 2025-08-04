@@ -19,6 +19,8 @@ repositories {
 
 dependencies {
 
+	implementation project(':monolithic')
+
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
 
