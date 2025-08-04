@@ -1,2 +1,5 @@
 rootProject.name = 'distributed-transaction'
 include 'monolithic'
+include 'order'
+include 'product'
+include 'point'
