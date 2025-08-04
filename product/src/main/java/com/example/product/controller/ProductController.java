@@ -1,6 +1,7 @@
 package com.example.product.controller;
 
 import com.example.monolithic.order.application.RedisLockService;
+import com.example.product.application.ProductFacadeService;
 import com.example.product.application.ProductService;
 import com.example.product.application.dto.ProductReserveResult;
 import com.example.product.controller.dto.ProductReserveRequest;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class ProductController {
 
-    private final ProductService productService;
+    private final ProductFacadeService productFacadeService;
     private final RedisLockService redisLockService;
 
     @PostMapping("/product/reserve")
@@ -27,7 +28,7 @@ public class ProductController {
         }
 
         try {
-            ProductReserveResult result = productService.tryReserve(request.toCommand());
+            ProductReserveResult result = productFacadeService.tryReserve(request.toCommand());
 
             return new ProductReserveResponse(result.totalPrice());
         } finally {
