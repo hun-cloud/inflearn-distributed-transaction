@@ -4,6 +4,7 @@ import com.example.monolithic.order.application.RedisLockService;
 import com.example.product.application.ProductFacadeService;
 import com.example.product.application.ProductService;
 import com.example.product.application.dto.ProductReserveResult;
+import com.example.product.controller.dto.ProductReserveConfirmRequest;
 import com.example.product.controller.dto.ProductReserveRequest;
 import com.example.product.controller.dto.ProductReserveResponse;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +32,22 @@ public class ProductController {
             ProductReserveResult result = productFacadeService.tryReserve(request.toCommand());
 
             return new ProductReserveResponse(result.totalPrice());
+        } finally {
+            redisLockService.releaseLock(key);
+        }
+    }
+
+    @PostMapping("/product/confirm")
+    public void confirm(@RequestBody ProductReserveConfirmRequest request) {
+        String key = "product:" + request.requestId();
+        boolean acquiredLock = redisLockService.tryLock(key, request.requestId());
+
+        if (!acquiredLock) {
+            throw new RuntimeException("락 획득에 실패하였습니다. 다른 요청을 시도해주세요.");
+        }
+
+        try {
+            productFacadeService.confirmReserve(request.toCommand());
         } finally {
             redisLockService.releaseLock(key);
         }

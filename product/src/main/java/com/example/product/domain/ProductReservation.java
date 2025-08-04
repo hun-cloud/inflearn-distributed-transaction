@@ -30,6 +30,14 @@ public class ProductReservation {
         this.status = ProductReservationStatus.RESERVED;
     }
 
+    public void confirm() {
+        if (this.status == ProductReservationStatus.CANCELLED) {
+            throw new RuntimeException("이미 취소된 예약입니다.");
+        }
+
+        this.status = ProductReservationStatus.CONFIRMED;
+    }
+
     public enum ProductReservationStatus {
         RESERVED,
         CONFIRMED,
