@@ -1,5 +1,6 @@
 package com.example.point.application;
 
+import com.example.point.application.dto.PointReserveCancelCommand;
 import com.example.point.application.dto.PointReserveCommand;
 import com.example.point.application.dto.PointReserveConfirmCommand;
 import lombok.RequiredArgsConstructor;
@@ -32,6 +33,20 @@ public class PointFacadeService {
         while (tryCount < 3) {
             try {
                 pointService.confirmReserve(command);
+            } catch (ObjectOptimisticLockingFailureException e) {
+                tryCount++;
+            }
+        }
+
+        throw new RuntimeException("예약에 실패하였습니다.");
+    }
+
+    public void cancelReserve(PointReserveCancelCommand command) {
+        int tryCount = 0;
+
+        while (tryCount < 3) {
+            try {
+                pointService.cancelReserve(command);
             } catch (ObjectOptimisticLockingFailureException e) {
                 tryCount++;
             }
