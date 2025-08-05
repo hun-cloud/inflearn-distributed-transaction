@@ -24,5 +24,4 @@ public class ProductService {
 
         return totalPrice;
     }
-
 }
